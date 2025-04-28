@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Box, Typography, Stepper, Step, StepLabel, Paper, Container } from "@mui/material";
+import { Box, Typography, Stepper, Step, StepLabel, Paper, Container, useMediaQuery, useTheme } from "@mui/material";
 import IAMRoleStep from "./IAMRoleStep";
 import CustomerManagedPoliciesStep from "./CustomerManagedPoliciesStep";
 import CostAndUsage from "./CostAndUsage";
@@ -17,9 +17,12 @@ const OnboardingDashboard = () => {
     <CostAndUsage onNext={() => setStep(3)} onBack={() => setStep(1)} />,
     <Submit />,
   ];
+  const theme = useTheme(); // Access Material-UI theme
+  const isMediumScreen = useMediaQuery("(max-width:1225px)"); // Check if the screen width is <= 1225px
+
 
   return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Container maxWidth={isMediumScreen ? "md" : "xl"} sx={{ py: 4 }}>
       <Paper elevation={3} sx={{ p: 4 }}>
         <Stepper activeStep={step} alternativeLabel sx={{ mb: 4 }}>
           {stepTitles.map((label, index) => (

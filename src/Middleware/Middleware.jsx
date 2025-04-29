@@ -5,7 +5,7 @@ let expirationCheckInterval = null;
 
 const tokenExpirationMiddleware = (store, navigate) => (next) => (action) => {
   if (action.type === "auth/logout") {
-    clearInterval(expirationCheckInterval); // Clear the interval on logout
+    clearInterval(expirationCheckInterval); 
     return next(action);
   }
 
@@ -14,8 +14,8 @@ const tokenExpirationMiddleware = (store, navigate) => (next) => (action) => {
   if (token) {
     try {
       const decodedToken = jwtDecode(token);
-      const issuedTime = decodedToken.iat * 1000; // Issued time in milliseconds
-      const expirationTime = issuedTime + 900000; // Add 15 minutes (900000ms)
+      const issuedTime = decodedToken.iat * 1000; 
+      const expirationTime = issuedTime + 900000; 
 
       if (!expirationCheckInterval) {
         expirationCheckInterval = setInterval(() => {
@@ -24,16 +24,16 @@ const tokenExpirationMiddleware = (store, navigate) => (next) => (action) => {
             console.log("Token expired. Logging out...");
             store.dispatch(logout());
             clearInterval(expirationCheckInterval);
-            navigate("/login"); // Use navigate for redirection
+            navigate("/login"); 
           }
-        }, 1000); // Check every second
+        }, 1000);
       }
 
       if (expirationTime <= Date.now()) {
         console.log("Token already expired. Logging out...");
         store.dispatch(logout());
         clearInterval(expirationCheckInterval);
-        navigate("/login"); // Use navigate for redirection
+        navigate("/login"); 
         return;
       }
     } catch (error) {

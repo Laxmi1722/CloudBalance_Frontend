@@ -21,7 +21,7 @@ const Submit = () => {
 
       <Stack direction="row" justifyContent="center" spacing={2} mt={4}>
         <Button variant="contained" onClick={handleGoToDashboard}>
-          Go to IAM Role Page
+          Go to Home Page
         </Button>
       </Stack>
     </Box>

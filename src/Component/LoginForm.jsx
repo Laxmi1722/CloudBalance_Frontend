@@ -50,7 +50,7 @@ const LoginForm = () => {
       if (token) {
         dispatch(loginSuccess({ token, email: userEmail, role, name }));
         toast.success('🎉 Login successful! Redirecting...', { autoClose: 2000 });
-
+        debugger;
         if (role === 'ADMIN') {
           navigate('/home/user-management');
         } else if (role === 'USER') {
@@ -65,7 +65,7 @@ const LoginForm = () => {
       if (error.response) {
         
         console.error('Login failed:', error.response.data);
-        if (error.response.status === 400 || error.response.status === 401) {
+        if (error.response.status === 400 || error.response.status === 401 ||error.response.status===500) {
           toast.error('❌ Login failed. Invalid email or password.');
         } else {
           toast.error('❌ Login failed. Invalid email or password.');

@@ -1,10 +1,10 @@
+
 import React from "react";
 import FusionCharts from "fusioncharts";
 import charts from "fusioncharts/fusioncharts.charts";
 import ReactFusioncharts from "react-fusioncharts";
 import { Box, Typography } from "@mui/material";
 
-// Resolve charts dependency
 charts(FusionCharts);
 
 const LineChartDisplay = ({ tableData }) => {
@@ -18,45 +18,60 @@ const LineChartDisplay = ({ tableData }) => {
     );
   }
 
-  // Extract keys for dynamic chart generation
-  const labelKey = Object.keys(tableData[0])[0]; // First key (e.g., month, service, etc.)
-  const seriesKey = Object.keys(tableData[0])[1]; // Second key (e.g., usage type, service name)
-  const valueKey = Object.keys(tableData[0])[2]; // Third key (e.g., usage amount)
+ 
+  const keys = Object.keys(tableData[0]);
+  const labelKey = keys[0]; 
+  const groupByKey = keys[1]; 
+  const valueKey =
+    keys.find((k) =>
+      ["cost", "amount", "total"].some((kw) => k.toLowerCase().includes(kw))
+    ) || keys[2];
 
-  // Create categories for the x-axis (e.g., month names, service names, etc.)
+  const groupedSeries = {};
+  tableData.forEach((item) => {
+    const groupName = item[groupByKey];
+    const label = item[labelKey];
+    const value = item[valueKey];
+
+    if (!groupedSeries[groupName]) {
+      groupedSeries[groupName] = {};
+    }
+    groupedSeries[groupName][label] = value;
+  });
+
+ 
+  const uniqueLabels = Array.from(new Set(tableData.map((item) => item[labelKey]))).sort();
+
+  
   const categories = [
     {
-      category: tableData.map((item) => ({
-        label: item[seriesKey] || "Unknown",
-      })),
+      category: uniqueLabels.map((label) => ({ label })),
     },
   ];
 
-  // Create dataset for the line chart (series)
-  const dataset = [
-    {
-      seriesname: "Amount (USD)", // Static name for the series
-      data: tableData.map((item) => ({
-        value: item[valueKey] || 0, // Fallback to 0 if no value present
-      })),
-    },
-  ];
 
-  // Define the data source object for FusionCharts
+  const dataset = Object.keys(groupedSeries).map((groupName) => ({
+    seriesname: groupName,
+    data: uniqueLabels.map((label) => ({
+      value: groupedSeries[groupName][label] || 0,
+    })),
+  }));
+
   const dataSource = {
     chart: {
-      caption: "Service Wise Total Usage (Line Chart)", // Customizable chart title
-      subcaption: "Total Usage Costs by Service", // Customizable subtitle
-      xaxisname: labelKey, // Name for x-axis
-      yaxisname: "Total Cost (USD)", // y-axis label
-      theme: "fusion", // Chart theme
-      drawAnchors: "1", // Show anchors on the line
-      anchorRadius: "4", // Size of the anchor points
-      lineThickness: "2", // Line thickness
-      animation: "1", // Enable animation
+      caption: `Usage Trend by ${groupByKey.replaceAll("_", " ")}`,
+      subcaption: `Grouped by ${groupByKey.replaceAll("_", " ")}`,
+      xaxisname: labelKey.replaceAll("_", " "),
+      yaxisname: "Total Cost (USD)",
+      theme: "fusion",
+      drawAnchors: "1",
+      anchorRadius: "4",
+      lineThickness: "2",
+      animation: "1",
+      showValues: "0",
     },
-    categories: categories,
-    dataset: dataset,
+    categories,
+    dataset,
   };
 
   return (
@@ -71,14 +86,14 @@ const LineChartDisplay = ({ tableData }) => {
       }}
     >
       <Typography variant="h5" align="center" gutterBottom>
-        Service Wise Total Usage
+        Usage Trend by {groupByKey.replaceAll("_", " ")}
       </Typography>
       <ReactFusioncharts
-        type="msline" // Line chart type
+        type="msline"
         width="100%"
-        height="400" // Height of the chart
+        height="400"
         dataFormat="JSON"
-        dataSource={dataSource} // Pass the data source
+        dataSource={dataSource}
       />
     </Box>
   );

@@ -17,11 +17,24 @@ import OnboardingDashboard from "./Dashboard/Onboarding/OnboardingDashboard";
 import CostExplorer from "./Dashboard/CostExplorer/CostExplorer";
 import User from "./Component/User";
 import EditUser from "./Component/EditUser";
-const ProtectedLogin = ({ children }) => {
-  const token = useSelector((state) => state.auth.token);
+// import { useNavigate } from "react-router-dom";
 
+const ProtectedLogin = ({ children }) => {
+  const {role, token} = useSelector((state) => state.auth);
+  // const navigate = useNavigate();
+  let path = "";
+
+  if (role === 'ADMIN') {
+    path = '/home/user-management'
+  } else if (role === 'USER') {
+    path ='/home/cost-explorer'
+  } else if (role === 'READ_ONLY') {
+    path = '/home/user-management'
+  } else {
+    path = '/home'
+  }
   
-  return token ? <Navigate to="/home/user-management" replace /> : children;
+  return token ? <Navigate to={path} replace /> : children;
 };
 
 const App = () => {
@@ -50,7 +63,7 @@ const App = () => {
         <Route
           path="user-management"
           element={
-            <ProtectedRoute allowedRoles={["ADMIN", "READ_ONLY"]}>
+            <ProtectedRoute allowedRoles={["ADMIN", "READ_ONLY", "USER"]}>
               <UserManagement />
             </ProtectedRoute>
           }

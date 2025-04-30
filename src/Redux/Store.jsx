@@ -5,7 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 import authReducer from './AuthSlice';
 import onboardingReducer from './OnboardingSlice'; 
-import tokenExpirationMiddleware from '../Middleware/Middleware';
+
 
 
 
@@ -28,7 +28,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false, 
-    }).concat(tokenExpirationMiddleware),
+    }),
   
 });
 

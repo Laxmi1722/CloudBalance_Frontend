@@ -11,14 +11,16 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../Redux/AuthSlice";
+import { logout } from "../Redux/AuthSlice"
 import { useNavigate, Outlet } from "react-router-dom";
+
 import Sidebar from "../Component/Sidebar";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cloudlogo from "../assets/cloudlogo.png";
 import { useState } from "react";
+import { resetForm } from "../Redux/OnboardingSlice";
 
 const debounce = (func, delay) => {
   let timer;
@@ -58,6 +60,8 @@ const Home = () => {
       );
 
       dispatch(logout());
+      dispatch(resetForm())
+    
       toast.success("Logged out successfully.");
       navigate("/login");
     } catch (err) {
@@ -80,12 +84,14 @@ const Home = () => {
 
       {/* Header */}
       <AppBar
-        position="static"
+        position="sticky"
         sx={{
           backgroundColor: "#FFFFFF",
           borderBottom: "1px solid #E0E0E0",
           boxShadow: "none",
           height: 70,
+          zIndex: 1201,
+         
         }}
       >
         <Toolbar sx={{ minHeight: 70, px: 2 }}>
@@ -153,6 +159,9 @@ const Home = () => {
             overflowX: "hidden",
             backgroundColor: "#fff",
             borderRight: isSidebarOpen ? "1px solid #e0e0e0" : "none",
+            position: "fixed", // Fix the sidebar to the left
+            height: "100vh", // Full height of the viewport
+            zIndex: 1200,
           }}
         >
           <Sidebar />
@@ -165,6 +174,7 @@ const Home = () => {
             p: 3,
             backgroundColor: "#F9FAFB",
             transition: "all 0.3s ease",
+            marginLeft: isSidebarOpen ? "250px" : "0",
           }}
         >
           <Outlet />

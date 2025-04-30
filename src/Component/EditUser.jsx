@@ -509,27 +509,38 @@ function EditUser() {
     <Box
       sx={{
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         alignItems: "center",
         minHeight: "100vh",
         backgroundColor: "#f5f5f5", 
-        padding: 3,
+        // padding: 3,
+        padding: { xs: 2, sm: 3, md: 4 },
+        
       }}
     >
       <Paper
         elevation={4}
         sx={{
-          padding: 4,
-          maxWidth: 600,
+          // padding: 4,
+          padding: { xs: 2, sm: 3, md: 4 },
+          maxWidth: "600px",
           width: "100%",
           backgroundColor: "#ffffff", 
           borderRadius: 2,
-          position:"relative",
-          right:"7rem",
-          bottom:"3rem"
+          // position:"relative",
+          // right:"10rem",
+          // bottom:"10rem",
+          // mr:"20rem"
+          marginLeft: { xs: 2, sm: 4, md: 6 }, // Adjust margin from the left for all screen sizes
+          marginTop: { xs: 2, sm: 3 ,md:-19}, 
+          
+
         }}
       >
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom  sx={{
+        textAlign: "center", // Center the heading
+        fontSize: { xs: "1.5rem", sm: "2rem" }, // Responsive font size
+      }}>
           Edit User
         </Typography>
 

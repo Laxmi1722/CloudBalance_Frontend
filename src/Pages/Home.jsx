@@ -54,7 +54,7 @@ const Home = () => {
       }
 
       await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/auth/logout`,
+        `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/auth/logout`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

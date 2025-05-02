@@ -12,8 +12,10 @@ import {
   Chip,
   Stack,
   IconButton,
+  Snackbar,
   Tooltip,
   InputAdornment,
+  Alert,
 } from '@mui/material';
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -40,6 +42,7 @@ const roleName = 'CK-Tuner-Role-dev2';
 const IAMRoleStep = ({onNext}) => {
     const formData = useSelector((state) => state.onboarding);
     const dispatch = useDispatch();
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
     
     const [errors, setErrors] = useState({});
     const handleChange = (field, value) => {
@@ -48,6 +51,10 @@ const IAMRoleStep = ({onNext}) => {
     
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false); 
   };
   const validateFields = () => {
     const newErrors = {};
@@ -281,8 +288,19 @@ const IAMRoleStep = ({onNext}) => {
               </Button>
             </Stack>
           </Stack>
+
         </CardContent>
       </Card>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000} // Automatically hide after 3 seconds
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+          Text copied to clipboard!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

@@ -46,7 +46,7 @@
 //     const fetchGroupOptions = async () => {
 //       try {
 //         const response = await axios.get(
-//           `${process.env.REACT_APP_API_BASE_URL}/snowflake/column`,
+//           `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/snowflake/column`,
 //           { headers: { Authorization: `Bearer ${token}` } }
 //         );
 //         setGroupOptions(response.data.map((opt) => opt.displayName));
@@ -62,7 +62,7 @@
 //     const fetchAccounts = async () => {
 //       try {
 //         const response = await axios.get(
-//           `${process.env.REACT_APP_API_BASE_URL}/user/available-cloudaccounts/names-and-ids`,
+//           `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/user/available-cloudaccounts/names-and-ids`,
 //           { headers: { Authorization: `Bearer ${token}` } }
 //         );
 //         setAccounts(response.data);
@@ -83,7 +83,7 @@
 //       for (const column of filterColumns) {
 //         try {
 //           const response = await axios.get(
-//             `${process.env.REACT_APP_API_BASE_URL}/snowflake/columnDetails`,
+//             `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/snowflake/columnDetails`,
 //             {
 //               headers: { Authorization: `Bearer ${token}` },
 //               params: { columnName: column },
@@ -126,7 +126,7 @@
 //       };
 
 //       const response = await axios.post(
-//         `${process.env.REACT_APP_API_BASE_URL}/snowflake/dynamic-query?groupBy=${groupBy}`,
+//         `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/snowflake/dynamic-query?groupBy=${groupBy}`,
 //         payload,
 //         { headers: { Authorization: `Bearer ${token}` } }
 //       );
@@ -425,7 +425,7 @@ const CostExplorer = () => {
     const fetchGroupOptions = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/snowflake/column`,
+          `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/snowflake/column`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setGroupOptions(response.data.map((opt) => opt.displayName));
@@ -441,7 +441,7 @@ const CostExplorer = () => {
     const fetchAccounts = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/user/available-cloudaccounts/names-and-ids`,
+          `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/user/available-cloudaccounts/names-and-ids`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setAccounts(response.data);
@@ -462,7 +462,7 @@ const CostExplorer = () => {
       for (const column of filterColumns) {
         try {
           const response = await axios.get(
-            `${process.env.REACT_APP_API_BASE_URL}/snowflake/columnDetails`,
+            `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/snowflake/columnDetails`,
             {
               headers: { Authorization: `Bearer ${token}` },
               params: { columnName: column },
@@ -505,7 +505,7 @@ const CostExplorer = () => {
       };
 
       const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/snowflake/dynamic-query?groupBy=${groupBy}`,
+        `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/snowflake/dynamic-query?groupBy=${groupBy}`,
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -522,16 +522,38 @@ const CostExplorer = () => {
     }
   };
 
-  const downloadExcel = async () => {
-    if (tableData.length === 0) return;
+  // const downloadExcel = async () => {
+  //   if (tableData.length === 0) return;
 
+  //   try {
+  //     const formattedData = tableData.map((item) => ({
+  //       "Usage Month": item.USAGE_MONTH,
+  //       [groupBy]: item[groupBy],
+  //       "Total Usage Cost ($)": item.TOTAL_USAGE_COST,
+  //     }));
+
+  //     const worksheet = XLSX.utils.json_to_sheet(formattedData);
+  //     const workbook = XLSX.utils.book_new();
+  //     XLSX.utils.book_append_sheet(workbook, worksheet, "CostData");
+  //     XLSX.writeFile(workbook, "CostData.xlsx");
+  //   } catch (error) {
+  //     console.error("Error downloading Excel:", error);
+  //     setError("Failed to download Excel.");
+  //   }
+  // };
+  const downloadExcel = async () => {
+    if (tableData.length === 0 || !groupBy) {
+      setError("Please select a 'Group By' option and ensure data is available.");
+      return;
+    }
+  
     try {
       const formattedData = tableData.map((item) => ({
         "Usage Month": item.USAGE_MONTH,
         [groupBy]: item[groupBy],
         "Total Usage Cost ($)": item.TOTAL_USAGE_COST,
       }));
-
+  
       const worksheet = XLSX.utils.json_to_sheet(formattedData);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "CostData");
@@ -541,6 +563,7 @@ const CostExplorer = () => {
       setError("Failed to download Excel.");
     }
   };
+  
 
   useEffect(() => {
     if (groupBy && selectedAccount && startDate && endDate) {
@@ -765,7 +788,7 @@ const CostExplorer = () => {
             {tableData.map((item, index) => (
               <TableRow key={index}>
                 <TableCell>{item.USAGE_MONTH}</TableCell>
-                {groupBy && <TableCell>{item.PRODUCT_PRODUCTNAME}</TableCell>}
+                {groupBy && <TableCell>{item[groupBy]}</TableCell>}
                 <TableCell>{item.TOTAL_USAGE_COST}</TableCell>
               </TableRow>
             ))}

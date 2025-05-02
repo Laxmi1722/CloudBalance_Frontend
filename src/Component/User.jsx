@@ -65,7 +65,7 @@ const User = () => {
       try {
      
         const res = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/user/available-cloudaccounts`,
+          `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/user/available-cloudaccounts`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -123,7 +123,7 @@ const User = () => {
     try {
     
       await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/user/create-user`,
+        `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/user/create-user`,
         userPayload,
         {
           headers: {

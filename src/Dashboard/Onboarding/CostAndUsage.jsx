@@ -62,7 +62,7 @@ const CostAndUsage = ({ onNext, onBack }) => {
       console.log("Token:", token);
 
       const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/onboarding/onboard`,
+        `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/onboarding/onboard`,
         payload,
         {
           headers: {

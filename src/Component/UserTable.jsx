@@ -55,22 +55,6 @@ function UserTable() {
     fetchData();
   }, [token]);
 
-// useEffect(() => {
-//   const fetchData = async () => {
-//     setLoading(true)
-//     try {
-//       const response = await axiosInstance.get("/user/all");
-//       setData(response?.data || []);
-//       setFilteredData(response?.data || []);
-//     } catch (error) {
-//       console.error("Error fetching data", error);
-//       setData([]);
-//       setFilteredData([]);
-//     }
-//   };
-
-//   fetchData();
-// }, [token]);
 
   const handleEdit = (user) => {
     navigate(`/home/user-management/edit-user/${user.id}`);

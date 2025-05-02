@@ -50,7 +50,7 @@ const LoginForm = () => {
       if (token) {
         dispatch(loginSuccess({ token, email: userEmail, role, name }));
         toast.success('🎉 Login successful! Redirecting...', { autoClose: 2000 });
-        debugger;
+       
         if (role === 'ADMIN') {
           navigate('/home/user-management');
         } else if (role === 'USER') {

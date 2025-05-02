@@ -17,8 +17,8 @@ const OnboardingDashboard = () => {
     <CostAndUsage onNext={() => setStep(3)} onBack={() => setStep(1)} />,
     <Submit />,
   ];
-  const theme = useTheme(); // Access Material-UI theme
-  const isMediumScreen = useMediaQuery("(max-width:1225px)"); // Check if the screen width is <= 1225px
+  const theme = useTheme(); 
+  const isMediumScreen = useMediaQuery("(max-width:1225px)"); 
 
 
   return (

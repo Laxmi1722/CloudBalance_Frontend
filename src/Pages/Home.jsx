@@ -11,7 +11,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../Redux/AuthSlice"
+import { logout,switchUser } from "../Redux/AuthSlice"
 import { useNavigate, Outlet } from "react-router-dom";
 
 import Sidebar from "../Component/Sidebar";
@@ -35,7 +35,7 @@ const debounce = (func, delay) => {
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userName = useSelector((state) => state.auth.name) || "User";
+  const userName = useSelector((state) => state.auth.name) ;
   const userRole = useSelector((state) => state.auth.role);
   const token = useSelector((state) => state.auth.token);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -54,7 +54,7 @@ const Home = () => {
       }
 
       await axios.post(
-        `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/auth/logout`,
+        `${process.env.REACT_APP_API_BASE_URL}/auth/logout`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -73,6 +73,7 @@ const Home = () => {
       );
     }
   };
+
 
   const debouncedToggleSidebar = debounce(() => {
     setIsSidebarOpen((prev) => !prev);
@@ -123,7 +124,7 @@ const Home = () => {
                 variant="subtitle1"
                 sx={{ fontWeight: "bold", color: "#000", fontSize: "1rem" }}
               >
-                {userName}
+                {userName || "USER"}
               </Typography>
               <Typography
                 variant="caption"

@@ -23,6 +23,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import axiosInstance from "../utils/axiosInterceptor"
 
 
 const roles = ["ADMIN", "USER", "READ_ONLY"];
@@ -64,14 +65,15 @@ const User = () => {
     const fetchAccounts = async () => {
       try {
      
-        const res = await axios.get(
-          `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/user/available-cloudaccounts`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
+        // const res = await axios.get(
+        //   `${process.env.REACT_APP_API_BASE_URL}/user/available-cloudaccounts`,
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${accessToken}`,
+        //     },
+        //   }
+        // );
+        const res = await axiosInstance.get("/user/available-cloudaccounts");
 
         const formatted = res.data.map((name, index) => ({
           id: index + 1,
@@ -122,15 +124,17 @@ const User = () => {
 
     try {
     
-      await axios.post(
-        `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/user/create-user`,
-        userPayload,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      // await axios.post(
+      //   `${process.env.REACT_APP_API_BASE_URL}/user/create-user`,
+      //   userPayload,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${accessToken}`,
+      //     },
+      //   }
+      // );
+      await axiosInstance.post("/user/create-user", userPayload); // Use axiosInstance
+
      
       toast.success("User created successfully!");
       

@@ -18,7 +18,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
+import axiosInstance from "../utils/axiosInterceptor";
 
 
 const roles = ["All", "ADMIN", "USER", "READ_ONLY"]; 
@@ -37,11 +38,12 @@ function UserTable() {
       setLoading(true);
       try {
        
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/all`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        // const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/all`, {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // });
+        const response = await axiosInstance.get("/user/all");
         setData(response?.data || []);
         setFilteredData(response?.data || []); 
       } catch (error) {

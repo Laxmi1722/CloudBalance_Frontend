@@ -17,10 +17,11 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import axiosInstance from "../utils/axiosInterceptor";
 
 const roles = ["ADMIN", "USER", "READ_ONLY"]; 
 
@@ -53,18 +54,23 @@ function EditUser() {
     const fetchUserAndCloudAccounts = async () => {
       setLoading(true);
       try {
-        const userResponse = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/user/${id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        // const userResponse = await axios.get(
+        //   `${process.env.REACT_APP_API_BASE_URL}/user/${id}`,
+        //   {
+        //     headers: { Authorization: `Bearer ${token}` },
+        //   }
+        // );
+      
 
-        const cloudAccountsResponse = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/user/available-cloudaccounts`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
+        // const cloudAccountsResponse = await axios.get(
+        //   `${process.env.REACT_APP_API_BASE_URL}/user/available-cloudaccounts`,
+        //   {
+        //     headers: { Authorization: `Bearer ${token}` },
+        //   }
+        // );
+        const userResponse = await axiosInstance.get(`/user/${id}`);
+        const cloudAccountsResponse = await axiosInstance.get(
+          "/user/available-cloudaccounts"
         );
 
         const userData = userResponse.data;
@@ -139,14 +145,16 @@ function EditUser() {
     }
 
     try {
-      await axios.put(
-        `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/user/${id}`,
-        updatePayload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
+      // await axios.put(
+      //   `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/user/${id}`,
+      //   updatePayload,
+      //   {
+      //     headers: { Authorization: `Bearer ${token}` },
+      //   }
+      // );
+      
+      
+      await axiosInstance.put(`/user/${id}`,updatePayload)
       toast.success("User updated successfully.");
       setTimeout(() => {
         navigate("/home/user-management"); 

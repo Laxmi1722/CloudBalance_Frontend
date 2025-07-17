@@ -25,6 +25,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import axiosInstance from "../../utils/axiosInterceptor";
 
 const AwsServices = () => {
   const [tab, setTab] = useState(0); 
@@ -40,14 +41,15 @@ const AwsServices = () => {
   useEffect(() => {
     const fetchCloudAccounts = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_REACT_APP_API_BASE_URL}/user/available-cloudaccounts/names-and-ids`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        // const response = await axios.get(
+        //   `${process.env.REACT_APP_API_BASE_URL}/user/available-cloudaccounts/names-and-ids`,
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${token}`,
+        //     },
+        //   }
+        // );
+         const response=await axiosInstance.get('/user/available-cloudaccounts/names-and-ids')
         
         const availableAccounts = response.data.filter((account) => {
           if (userRole === "ADMIN" || userRole === "READ_ONLY") {
